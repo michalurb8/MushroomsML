@@ -6,7 +6,6 @@ from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import LabelEncoder
 
 grzybki = pan.read_csv("agaricus-lepiota.data")
-grzybki.replace('?', np.NaN)
 
 
 X = grzybki.drop(['0'], axis=1)
@@ -14,8 +13,9 @@ Y = grzybki.take([0], axis=1)
 X = (X.apply(LabelEncoder().fit_transform))
 Y = (Y.apply(LabelEncoder().fit_transform))
 
+
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y)
-print(X_train.count)
+print(X_train)
 
 regr = LinearRegression()
 regr.fit(X_test, Y_test)
