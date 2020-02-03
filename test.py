@@ -1,18 +1,31 @@
+import matplotlib.pyplot as plt
 import numpy as np
-import matplotlib.pyplot as plt  # To visualize
-import pandas as pd  # To read data
-from sklearn.linear_model import LinearRegression
-
-data = pd.read_csv('data.csv')  # load data set
-X = data.iloc[:, 0].values.reshape(-1, 1)  # values converts it into a numpy array
-Y = data.iloc[:, 1].values.reshape(-1, 1)  # -1 means that calculate the dimension of rows, but have 1 column
-linear_regressor = LinearRegression()  # create object for the class
-linear_regressor.fit(X, Y)  # perform linear regression
-Y_pred = linear_regressor.predict(X)  # make predictions
-
-print(type(X))
-print(type(Y_pred))
-
-plt.scatter(X, Y)
-plt.plot(X, Y_pred, color='red')
+from sklearn import datasets, linear_model
+# Load the diabetes dataset
+diabetes = datasets.load_diabetes()
+f, axarr = plt.subplots(5,2, sharex=True, sharey=True,figsize=(12,12))
+for i in range(0,5):
+    for j in range(0,2):
+        # Use only one feature
+        diabetes_X = diabetes.data[:, np.newaxis, i*2+j]
+        print(diabetes_X.shape)
+        # Split the data into training/testing sets
+        diabetes_X_train = diabetes_X[:-20]
+        diabetes_X_test = diabetes_X[-20:]
+        
+        # Split the targets into training/testing sets
+        diabetes_y_train = diabetes.target[:-20]
+        diabetes_y_test = diabetes.target[-20:]
+        
+        # Create linear regression object
+        regr = linear_model.LinearRegression()
+        
+        # Train the model using the training sets
+        regr.fit(diabetes_X_train, diabetes_y_train)
+        
+        # Plot outputs
+        axarr[i,j].scatter(diabetes_X_test, diabetes_y_test,  color='red')
+        axarr[i,j].scatter(diabetes_X_test, regr.predict(diabetes_X),  color='red')
+        #axarr[i,j].plot(diabetes_X_test, regr.predict(diabetes_X_test), color='blue', linewidth=1)
+        
 plt.show()
