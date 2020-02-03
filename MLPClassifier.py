@@ -1,14 +1,15 @@
 import pandas as pan
 import numpy as np
 import matplotlib.pyplot as plt
+import random
 from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import LabelEncoder
 
 
-def function(X_train, Y_train, X_test, i):
+def function(X_train, Y_train, X_test, n, i):
 	
-	network = MLPClassifier(hidden_layer_sizes=(i,i,i), max_iter = 50)
+	network = MLPClassifier(hidden_layer_sizes=(n,n,n), max_iter = i)
 	network.fit(X_train, Y_train)
 	Y_predicted = network.predict(X_test)
 
@@ -29,22 +30,28 @@ Y = (Y.apply(LabelEncoder().fit_transform))
 
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y)
 
-#network = MLPClassifier(hidden_layer_sizes=(i,i,i), max_iter = 50)
-#network.fit(X_train, Y_train)d
-#Y_predicted = network.predict(X_test)
-
-#Y_predicted = Y_predicted[:, np.newaxis]
-
-#error = ((Y_predicted - Y_test)**2).mean()
-#error_num = error[0]
-#print(error[0])
-#i = i + 1
 my_error = 1
-i = 1
+neurons = new_n = 1
+iterations = new_i = 1
 while my_error > 0.02:
-	my_error, Y_predicted = function(X_train, Y_train, X_test, i)
-	print(my_error)
-	i = i + 1
+	new_error, Y_predicted = function(X_train, Y_train, X_test, new_n, new_i)
+	print(new_i)
+	print(new_n)
+	print(new_error)
+	if new_error < my_error:
+		my_error = new_error
+		neurons = new_n
+		iterations = new_i
+	rand = random.randint(0, 3)
+	if rand == 0:
+		new_i = new_i + 5
+	if rand == 1 and new_i > 0:
+		new_i = new_i - 3
+	if rand == 2:
+		new_n = new_n + 1
+	if rand == 3 and new_n > 0:
+		new_n = new_n - 1
+	
 
 f, axarr = plt.subplots(11, 2)
 for i in range(2):
