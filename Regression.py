@@ -15,14 +15,14 @@ Y = (Y.apply(LabelEncoder().fit_transform))
 
 
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y)
-print(X_train)
 
 regr = LinearRegression()
 regr.fit(X_test, Y_test)
 Y_predicted = regr.predict(X_test)
 
 error = np.mean((Y_predicted - Y_test)**2)
-print(error)
+print("Blad dopasowania:")
+print(error[0])
 
 
 f, axarr = plt.subplots(11, 2)

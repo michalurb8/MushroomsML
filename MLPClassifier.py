@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import LabelEncoder
 
+error_rate = 0.02
 
 def function(X_train, Y_train, X_test, n, i):
 	
@@ -31,27 +32,33 @@ Y = (Y.apply(LabelEncoder().fit_transform))
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y)
 
 my_error = 1
-neurons = new_n = 1
-iterations = new_i = 1
-while my_error > 0.02:
+neurons = 2
+iterations = 5
+while my_error > error_rate:
+	new_n = neurons
+	new_i = iterations
+	rand = random.randint(0, 5)
+	if rand < 2:
+		new_i = iterations + 5
+	if rand == 2 and iterations > 3:
+		new_i = iterations - 2
+	if rand == 3 and new_n > 1:
+		new_n = neurons - 1
+	if rand > 3:
+		new_n = neurons + 2
+
 	new_error, Y_predicted = function(X_train, Y_train, X_test, new_n, new_i)
-	print(new_i)
-	print(new_n)
+
 	print(new_error)
 	if new_error < my_error:
 		my_error = new_error
 		neurons = new_n
 		iterations = new_i
-	rand = random.randint(0, 3)
-	if rand == 0:
-		new_i = new_i + 5
-	if rand == 1 and new_i > 0:
-		new_i = new_i - 3
-	if rand == 2:
-		new_n = new_n + 1
-	if rand == 3 and new_n > 0:
-		new_n = new_n - 1
-	
+
+print("Neurony:")
+print(neurons)
+print("Maks. liczba iteracji")
+print(iterations)
 
 f, axarr = plt.subplots(11, 2)
 for i in range(2):
